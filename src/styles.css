@@ -1,0 +1,56 @@
+.my_icon_btn{
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;
+
+}
+
+.template-row{
+    grid-template-rows: auto 1fr ;
+}
+
+.template-row-inverse{
+    grid-template-rows:  1fr auto  ;
+}
+
+.my-badge{
+    height: 2.2rem;
+    width : 2.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.my_icon_btn_indigo:hover{
+    background-color: var(--bs-indigo);
+    border: 1px solid var(--bs-light-border-subtle);
+}
+
+.my_icon_btn_light:hover{
+    background-color: var(--bs-light);
+    border: 1px solid var(--bs-dark-border-subtle);
+}
+.my_icon_btn_dark:hover{
+    background-color: var(--bs-dark);
+    border: 1px solid var(--bs-dark-border-subtle);
+}
+
+.bg-indigo{
+    background-color: var(--bs-indigo);
+}
+
+.bg-cyan{
+    background-color: var(--bs-cyan);
+
+}
+.bg-blue{
+    background-color: var(--bs-blue)
+}
+
+.lh-small{
+    line-height: 0px;
+}
+
+.my_active{
+    background-color: var(--bs-light-bg-subtle);
+}
