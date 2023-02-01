@@ -14,20 +14,25 @@ function getScreenSize() {
     else
         return 'lg'
 }
-
 function App() {
     let [syntaxError, setSyntaxError] = useState("")
     let [showLogin, setShowLogin] = useState(false);
     let [showSignup, setShowSignup] = useState(false);
-    let [section, setSection] = useState("Home")
+    let [section, setSection] = useState("Classes")
     let [windowSize, setWindowSize] = useState(getScreenSize())
+    let [windowHeight, setWindowHeight] = useState(window.innerHeight.toString()+"px")
     let [logged, setLogged] = useState(false);
     let [user, setUser] = useState({username: "", password: ""})
     window.onresize = () => {
+
         setWindowSize(getScreenSize());
+        setWindowHeight(window.innerHeight.toString()+"px")
+        console.log(window.innerHeight.toString()+"px")
     }
+
     let def =
-        <div className={"d-flex  justify-content-center align-items-center "}>
+        <div
+            className={"d-flex  justify-content-center align-items-center "} >
             <strong>you have to
                 <span onClick={() => setShowLogin(true)} className={"link-primary "}> login </span>
                 to view this page
@@ -44,7 +49,8 @@ function App() {
             if (!logged)
                 mainWindow = def
             else {
-                mainWindow = <ClassWindow setSection={setSection} windowSize={windowSize} user={user}></ClassWindow>
+                mainWindow = <ClassWindow section={section} setSection={setSection} setSyntaxError={setSyntaxError}
+                                          windowSize={windowSize} user={user}></ClassWindow>
                 navbar_hide = true
             }
                 break;
@@ -59,7 +65,8 @@ function App() {
     }
 
     return (
-        <div className={"vh-100  d-grid template-row overflow-hidden"}>
+        <div style={{height:windowHeight}}
+                className={  "d-grid template-row overflow-hidden   app-bg"}>
             {syntaxError ? <div className={"vh-100 text-danger"}
                                 dangerouslySetInnerHTML={{__html: syntaxError}}></div> :
                 <>

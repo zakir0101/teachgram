@@ -2,8 +2,15 @@ import {Button, Form, FormGroup, Modal} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import {post_message_action} from "./teachgram_api";
 
+
 function ConfirmDelete(props) {
 
+    let msg = ""
+    if(props.text)
+        msg = <p> {props.text}</p> ;
+    else
+        msg = <p> are you sure you want to delete "{props.name}" ,
+        <strong>it can`t be undone</strong></p>
 
     return (
 
@@ -12,7 +19,7 @@ function ConfirmDelete(props) {
                 <Modal.Title>Delete {props.name}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <p>are you sure you want to delete "{props.name}" , <strong>it can`t be undone</strong> </p>
+                {msg}
             </Modal.Body>
             <Modal.Footer>
                 <div className={"flex-grow-1 d-flex gap-2 align-items-center justify-content-end "}>

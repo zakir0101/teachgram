@@ -13,7 +13,7 @@ function Toolbar(props) {
         brandMargin = "me-auto"
     }
     return (
-        <Navbar      variant={props.variant} className={props.className}  expand={false}>
+        <Navbar collapseOnSelect     variant={props.variant} className={props.className}  expand={false}>
             <Container fluid className={"gap-1 "+containerClass}>
                 {props.titleCenterd ? <div></div>:<></>}
                 <Navbar.Brand href="#home" className={brandMargin}>{props.title}</Navbar.Brand>
@@ -42,7 +42,8 @@ function Toolbar(props) {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         {['Home', 'Classes', 'Standards', 'About'].map(name =>
-                            <Nav.Link key={"$" + name} onClick={() => props.setSection(name)}
+                            <Nav.Link key={"$" + name} onClick={() =>{ props.setSection(name) ;
+                            if(name==="Classes") props.setClassSection('ClassList')}}
                                       href={"#" + name}> {name}</Nav.Link>
                         )}
 
