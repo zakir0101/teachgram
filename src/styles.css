@@ -60,9 +60,29 @@
 
 }
 
+.standard-card {
+    background-color: var(--bs-light-bg-subtle);
+    background-color: var(--bs-success-bg-subtle);
+    background-color: rgba(207, 234, 212, 0.3);
+}
+
+.standard-card-selected{
+    background-color: var(--bs-dark-bg-subtle);
+    background-color: rgba(206, 212, 218, 0.38);
+
+}
 
 .standard-card:hover{
-     background-color: var(--bs-light-bg-subtle);
+     background-color: var(--bs-dark-bg-subtle);
+    background-color: rgba(206, 212, 218, 0.38);
+
+}
+
+.standard-card:focus{
+     background-color: var(--bs-dark-bg-subtle);
+    background-color:#CED4DAFF;
+    background-color: rgba(206, 212, 218, 0.38);
+
 
 }
 
@@ -97,4 +117,8 @@
     background-color: var(--bs-light);
     background-color: #f5f5f6;
     background-color: var(--bs-light-bg-subtle);
+}
+
+.my-link{
+    cursor: pointer;
 }

@@ -88,6 +88,7 @@ function ClassStandardList(props) {
     }
 
     let handleDoubleClick = (standard) => {
+
         props.setActiveClassStandard(standard)
         props.setUpSection("ClassUnitList")
     }
@@ -126,10 +127,10 @@ function ClassStandardList(props) {
 
     let list = []
     for (const standard of props.activeClass.standard_list) {
-        let active = " opacity-0" , border = " border-1"
+        let active = "" , border = " border-1"
         if(standard === selected)
         {
-            active = " opacity-5"
+            active = " standard-card-selected"
             border = " border-5"
         }
         let item =
@@ -137,11 +138,11 @@ function ClassStandardList(props) {
                   onTouchEnd={() => onMouseUp()}
                   onDoubleClick={() => handleDoubleClick(standard)}
                   onClick={(event) => handleClick(event, standard)}
-                  className={"standard-card   position-relative border-0 border-bottom border-end  " +border}
+                  className={"standard-card   position-relative border-0 border-bottom border-end  "+active +border}
                   style={{minWidth: '15rem', width: '15rem', height: '13rem'}}>
                 <Card.Body>
                     <div
-                        className={"position-absolute start-0  end-0 top-0 bottom-0 bg-primary " + active} >
+                        className={"position-absolute start-0  end-0 top-0 bottom-0 " } >
 
                     </div>
                     <Card.Title><span className={"text-dark-emphasis"}>{standard.name}</span></Card.Title>

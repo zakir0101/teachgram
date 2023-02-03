@@ -7,22 +7,18 @@ import {ClassObjectiveList} from "./7_4_ClassObjectiveList";
 import {ClassLessonList} from "./7_5_ClassLessonList";
 
 function ClassPreview(props) {
-    let [activeClassStandard, setActiveClassStandard] = useState({})
-    let [activeClassUnit, setActiveClassUnit] = useState({})
-    let [activeClassCycle, setActiveClassCycle] = useState({})
-
 
     useEffect(() => {
-        let standard_id = activeClassStandard.id
+        let standard_id = props.activeClassStandard.id
         if ( standard_id) {
             for (const standard of props.activeClass.standard_list) {
                 if (standard.id === standard_id) {
-                    setActiveClassStandard(standard)
-                    let unit_id = activeClassUnit.id
+                    props.setActiveClassStandard(standard)
+                    let unit_id = props.activeClassUnit.id
                     if ( unit_id ) {
                         for (const unit of standard.unit_list) {
                             if (unit.id === unit_id)
-                                setActiveClassUnit(unit)
+                                props.setActiveClassUnit(unit)
                         }
                     }
 
@@ -39,24 +35,24 @@ function ClassPreview(props) {
         case "ClassCycleList":
         case "ClassStandardList":
             upWindow =<>
-                <ClassStandardList setActiveClassStandard={setActiveClassStandard}
+                <ClassStandardList setActiveClassStandard={props.setActiveClassStandard}
                                    setUpSection={props.setUpSection} {...props}></ClassStandardList>;
-                <ClassCycleList  setActiveClassCycle={setActiveClassCycle}
+                <ClassCycleList  setActiveClassCycle={props.setActiveClassCycle}
                     setUpSection={props.setUpSection} {...props}></ClassCycleList>
 
             </>
             break;
         case "ClassUnitList":
-            upWindow = <ClassUnitList  setActiveClassUnit={setActiveClassUnit}
-                        activeClassStandard={activeClassStandard}
+            upWindow = <ClassUnitList  setActiveClassUnit={props.setActiveClassUnit}
+                        activeClassStandard={props.activeClassStandard}
                         setUpSection={props.setUpSection} {...props} ></ClassUnitList>
             break;
         case "ClassObjectiveList":
-            upWindow = <ClassObjectiveList activeClassUnit={activeClassUnit}
+            upWindow = <ClassObjectiveList activeClassUnit={props.activeClassUnit}
                 setUpSection={props.setUpSection} {...props} ></ClassObjectiveList>
                 break ;
         case "ClassLessonList":
-            upWindow = <ClassLessonList activeClassCycle={activeClassCycle}
+            upWindow = <ClassLessonList activeClassCycle={props.activeClassCycle}
                 setUpSection={props.setUpSection} {...props} ></ClassLessonList>
             break;
     }

@@ -7,7 +7,7 @@ import {capitalize} from "./util";
 
 function MyNavbar(props) {
     let expand = 'md'
-    let [show ,setShow] = useState(false)
+    let [show, setShow] = useState(false)
     let handleLogin = () => {
         setShow(false)
         props.setShowLogin(true)
@@ -19,30 +19,30 @@ function MyNavbar(props) {
         props.setShowSignup(true)
     }
 
-    let handleLogout = ()=> {
+    let handleLogout = () => {
         setShow(false)
         props.setSection('Home')
         props.setShowLogin(false)
         props.setShowSignup(false)
         props.setLogged(false)
-        props.setUser({username:"",password:""})
+        props.setUser({username: "", password: ""})
         deleteUserCookies()
     }
 
-        let btn_variant
+    let btn_variant
     if (props.windowSize === "sm")
         btn_variant = "outline-primary"
     else
         btn_variant = "outline-light"
 
 
-    let user_letter, login_form,offcanvas_h
+    let user_letter, login_form, offcanvas_h
     if (props.logged) {
         user_letter = <Badge bg={"secondary"}
                              className={"bg-light-subtle text-primary rounded-circle fs-5 fw-bold me-2  my-badge"}>
             {props.user.username.charAt(0).toUpperCase()}</Badge>
 
-        login_form =( <><Button variant={btn_variant} onClick={handleLogout}>Logout</Button></>)
+        login_form = (<><Button variant={btn_variant} onClick={handleLogout}>Logout</Button></>)
     } else {
 
         user_letter = <></>
@@ -54,30 +54,30 @@ function MyNavbar(props) {
     }
 
 
-
-
     return (
         <>
-            <Navbar collapseOnSelect   onSelect={()=>{setShow(false)}}
+            <Navbar collapseOnSelect onSelect={() => {
+                setShow(false)
+            }}
                     variant={"dark"} key={expand} bg={"primary"}
                     expand={expand}
-                     className=""  >
+                    className="">
                 <Container fluid>
                     {user_letter}
                     <Navbar.Brand href="#" className={"me-auto me-md-0"}>Teachgram</Navbar.Brand>
-                    <Navbar.Toggle onClick={()=>setShow(true )}/>
+                    <Navbar.Toggle onClick={() => setShow(true)}/>
                     <Navbar.Offcanvas className={""}
                                       id={`offcanvasNavbar-expand-${expand}`}
                                       placement="end"
-                        show={show}
+                                      show={show}
 
                     >
-                        <Offcanvas.Header closeButton   onClick={()=>setShow(false)}>
+                        <Offcanvas.Header closeButton onClick={() => setShow(false)}>
                             <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
                                 Welcome {capitalize(props.user.username)}
                             </Offcanvas.Title>
                         </Offcanvas.Header>
-                        <Offcanvas.Body >
+                        <Offcanvas.Body>
                             <Nav className="justify-content-end flex-grow-1 pe-3 ">
                                 <div
                                     className={"d-flex justify-content-start ms-2 flex-column flex-md-row flex-grow-1"}>
@@ -94,16 +94,17 @@ function MyNavbar(props) {
                     </Navbar.Offcanvas>
                 </Container>
             </Navbar>
-            <Login {...props}>
-            </Login>
-            <Signup {...props}>
-            </Signup>
-
+            {props.logged ? <></> :
+                <Login {...props}>
+                </Login>
+            }
+            {!props.showSignup ? <></> :
+                <Signup {...props}>
+                </Signup>
+            }
         </>
     )
 }
-
-
 
 
 export {MyNavbar}

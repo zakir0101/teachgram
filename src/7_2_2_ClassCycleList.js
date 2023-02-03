@@ -147,9 +147,9 @@ function ClassCycleList(props) {
 
     let list = []
     for (const cycle of cycleList) {
-        let active = " opacity-0" , border = ""
+        let active = "" , border = ""
         if (cycle === selected){
-            active = " opacity-5"
+            active = " standard-card-selected"
             border = "  border-4"
         }
 
@@ -160,8 +160,8 @@ function ClassCycleList(props) {
                             onTouchEnd={() => onMouseUp(cycle)}
                             onDoubleClick={() => handleDoubleClick(cycle)}
                             onClick={(event) => handleClick(event, cycle)}
-                            action className={"position-relative py-3 py-md-2  d-flex align-items-center  rounded-3 border-bottom border-end "+ border }>
-                <div className={"position-absolute start-0   end-0 top-0 bottom-0 bg-primary "+active }>
+                            action className={"position-relative py-3 py-md-2  d-flex align-items-center  rounded-3 border-bottom border-end "+active+ border }>
+                <div className={"position-absolute start-0   end-0 top-0 bottom-0 " }>
                 </div>
                 <div style={{height: "2.6rem", width: "2.6rem"}}
                      className={"rounded-circle   d-flex lh-sm fs-4 justify-content-center align-items-center " + color[0]}>

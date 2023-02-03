@@ -9,10 +9,9 @@ if(mode === ONLINE){
 }else if(mode === OFFLINE)
 {    address = 'http://localhost/teachgram/0_main.php'
 
-}else if(mode===2)
+}else if(mode===2) {
     address = 'http://192.168.185.149/teachgram/0_main.php'
-
-
+}
 
 
 

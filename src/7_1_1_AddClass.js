@@ -1,11 +1,19 @@
 import {Button, Form, FormGroup, InputGroup, Modal} from "react-bootstrap";
 import {useEffect, useState} from "react";
+import {Typeahead} from 'react-bootstrap-typeahead'; // ES2015
+import 'react-bootstrap-typeahead/css/Typeahead.css';
+
+
+import 'react-bootstrap-typeahead/css/Typeahead.css';
+import './styles.css';
+import {capitalize} from "./util";
 
 function AddClass(props) {
     let currency_s = 'SDG', payment_s = 0
     let name = " "
     let cycleDate_s = new Date().toJSON().slice(0, 10)
-    let lessonDate_s = new Date().toJSON().slice(0, 10) , lessonDuration_s = 0
+    let lessonDate_s = new Date().toJSON().slice(0, 10), lessonDuration_s = 0
+    let standard_s = "", subject_s = "" , unit_s="" , text_s = ""
     if (props.edit) {
         name = props.selected.name
         cycleDate_s = props.selected.date
@@ -13,7 +21,9 @@ function AddClass(props) {
         lessonDuration_s = props.selected.duration
         payment_s = props.selected.payment_rate
         currency_s = props.selected.currency
-
+        standard_s = props.selected.name;
+        unit_s = props.selected.name
+        text_s = props.selected.text
     } else {
         name = ""
     }
@@ -21,9 +31,13 @@ function AddClass(props) {
     let [classname, setClassname] = useState(name)
     let [payment, setPayment] = useState(payment_s)
     let [currency, setCurrency] = useState(currency_s)
-
+    let [error , setError ] = useState("")
     let [lessonDate, setLessonDate] = useState(lessonDate_s)
     let [lessonDuration, setLessonDuration] = useState(lessonDuration_s)
+    let [standardName, setStandardName] = useState(standard_s)
+    let [subject, setSubject] = useState(subject_s)
+    let [unitName, setUnitName] = useState(unit_s)
+    let [objectiveText, setObjectiveText] = useState(text_s)
 
 
     let handleOk, handleChange
@@ -49,9 +63,9 @@ function AddClass(props) {
 
                 setClassname("")
                 if (props.edit)
-                    props.handleEditOk(event, classname ,payment ,currency)
+                    props.handleEditOk(event, classname, payment, currency)
                 else
-                    props.handleAddOk(event , classname ,payment ,currency)
+                    props.handleAddOk(event, classname, payment, currency)
             }
 
             form =
@@ -147,7 +161,7 @@ function AddClass(props) {
 
 
             handleChange = (event) => {
-                if (event.target.type === "date" )
+                if (event.target.type === "date")
                     setLessonDate(event.target.value)
                 else
                     setLessonDuration(event.target.value)
@@ -158,9 +172,9 @@ function AddClass(props) {
 
                 setLessonDate(new Date().toJSON().slice(0, 10))
                 if (props.edit)
-                    props.handleEditOk(lessonDate,lessonDuration)
+                    props.handleEditOk(lessonDate, lessonDuration)
                 else
-                    props.handleAddOk( lessonDate , lessonDuration)
+                    props.handleAddOk(lessonDate, lessonDuration)
             }
 
             form =
@@ -174,6 +188,135 @@ function AddClass(props) {
                         <Form.Control value={lessonDuration} onChange={handleChange} type={"number"}/>
                     </FormGroup>
                     <p className={"small text-danger"}></p>
+                </Form>
+
+            break
+
+
+        case "Standard":
+
+
+            let handleChange1 = (event) => {
+                setStandardName(event.target.value)
+            }
+
+
+            let handleChange2 = (subjects) => {
+                let s = subjects[0]
+                if(s) {
+                    if (s.label) {
+                        setSubject(s.label)
+                    }else{
+                        setSubject(subjects[0])
+                    }
+                }
+            }
+
+            handleOk = (event) => {
+                if (!standardName ) {
+                    setError("you have to enter a standard name")
+                    return;
+                }
+
+                if (!subject ) {
+                    setError("you have to select a subject")
+                    return;
+                }
+
+                if (props.edit)
+                    props.handleEditOk(event,standardName,subject)
+                else
+                    props.handleAddOk(event,standardName,subject)
+
+
+            }
+
+            form =
+                <Form>
+                    <FormGroup className={"mb-3"}>
+                        <Form.Label>Standard Name</Form.Label>
+                        <Form.Control value={standardName} onChange={handleChange1} type={"text"}/>
+                    </FormGroup>
+                    <FormGroup className={"mb-3"}>
+                        <Form.Label>Subject Name</Form.Label>
+                        <Typeahead
+                            allowNew
+                            id="basic-example"
+                            onChange={handleChange2}
+                            options={props.subjectList}
+                            placeholder="Choose a subject..."
+                        /> </FormGroup>
+                    <p className={"small text-danger"}>{error  }</p>
+                </Form>
+
+            break
+
+        case "Unit":
+
+
+             handleChange = (event) => {
+                setUnitName(event.target.value)
+            }
+
+
+            handleOk = (event) => {
+                if (!unitName ) {
+                    setError("you have to enter a unit name")
+                    return;
+                }
+
+
+                if (props.edit)
+                    props.handleEditOk(event,unitName)
+                else
+                    props.handleAddOk(event,unitName)
+
+
+            }
+
+            form =
+                <Form onClick={e => e.stopPropagation()}>
+                    <FormGroup className={"mb-3"}>
+                        <Form.Label>Unit Name</Form.Label>
+                        <Form.Control value={unitName} onChange={handleChange} type={"text"}/>
+                    </FormGroup>
+
+                    <p className={"small text-danger"}>{error  }</p>
+                </Form>
+
+            break
+
+
+        case "Objective":
+
+
+            handleChange = (event) => {
+                setObjectiveText(event.target.value)
+            }
+
+
+            handleOk = (event) => {
+                if (!objectiveText ) {
+                    setError("you have to write an objective")
+                    return;
+                }
+
+                if (props.edit)
+                    props.handleEditOk(event,objectiveText)
+                else
+                    props.handleAddOk(event,objectiveText)
+
+
+            }
+
+            form =
+                <Form onClick={e => e.stopPropagation()}>
+                    <FormGroup className={"mb-3"}>
+                        <Form.Label>Objective</Form.Label>
+                        <Form.Control as={"textarea"} style={{height: "8.5rem"}} value={objectiveText} onChange={handleChange} />
+                    </FormGroup>
+
+                    <p className={"small text-danger"}>{error  }</p>
                 </Form>
 
             break

@@ -6,6 +6,7 @@ import {About} from "./6_About";
 import {MyNavbar} from "./2_myNavbar";
 import userEvent from "@testing-library/user-event";
 import {ClassWindow} from "./7_0_ClassWindow";
+import {StandardWindow} from "./8_0_StandardWindow";
 
 
 function getScreenSize() {
@@ -18,7 +19,7 @@ function App() {
     let [syntaxError, setSyntaxError] = useState("")
     let [showLogin, setShowLogin] = useState(false);
     let [showSignup, setShowSignup] = useState(false);
-    let [section, setSection] = useState("Classes")
+    let [section, setSection] = useState("Home")
     let [windowSize, setWindowSize] = useState(getScreenSize())
     let [windowHeight, setWindowHeight] = useState(window.innerHeight.toString()+"px")
     let [logged, setLogged] = useState(false);
@@ -57,6 +58,11 @@ function App() {
         case 'Standards':
             if (!logged)
                 mainWindow = def
+            else {
+                mainWindow= <StandardWindow section={section} setSection={setSection} setSyntaxError={setSyntaxError}
+                                         windowSize={windowSize} user={user}></StandardWindow>
+                navbar_hide = true
+            }
             break
         case 'About':
             mainWindow = <About className={"overflow-auto"}></About>
@@ -66,7 +72,7 @@ function App() {
 
     return (
         <div style={{height:windowHeight}}
-                className={  "d-grid template-row overflow-hidden   app-bg"}>
+                className={"d-grid template-row overflow-hidden   app-bg"}>
             {syntaxError ? <div className={"vh-100 text-danger"}
                                 dangerouslySetInnerHTML={{__html: syntaxError}}></div> :
                 <>

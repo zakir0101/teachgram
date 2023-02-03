@@ -42,8 +42,7 @@ function Toolbar(props) {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         {['Home', 'Classes', 'Standards', 'About'].map(name =>
-                            <Nav.Link key={"$" + name} onClick={() =>{ props.setSection(name) ;
-                            if(name==="Classes") props.setClassSection('ClassList')}}
+                            <Nav.Link key={"$" + name} onClick={() =>{ props.setSection(name) }}
                                       href={"#" + name}> {name}</Nav.Link>
                         )}
 

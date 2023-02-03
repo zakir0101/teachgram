@@ -11,6 +11,10 @@ function ClassWindow(props) {
     let [classSection, setClassSection] = useState("ClassList")
     let [activeClass, setActiveClass] = useState({})
 
+    let [activeClassStandard, setActiveClassStandard] = useState({})
+    let [activeClassUnit, setActiveClassUnit] = useState({})
+    let [activeClassCycle, setActiveClassCycle] = useState({})
+
     let mainWindow;
 
     useEffect(() => {
@@ -28,7 +32,13 @@ function ClassWindow(props) {
                     {...props}></ClassList></div>
                 break;
             case "ClassPreview":
-                mainWindow = <ClassPreview upSection={upSection} setUpSection={setUpSection}
+                mainWindow = <ClassPreview activeClassStandard={activeClassStandard}
+                    setActiveClassStandard={setActiveClassStandard}
+                    activeClassUnit={activeClassUnit} setActiveClassUnit={setActiveClassUnit}
+                    activeClassCycle={activeClassCycle} setActiveClassCycle={setActiveClassCycle}
+
+
+                    upSection={upSection} setUpSection={setUpSection}
                                             classSection={classSection}
                                            setClassSection={setClassSection} activeClass={activeClass}
                                            setActiveClass={setActiveClass} {...props}></ClassPreview>
@@ -43,15 +53,19 @@ function ClassWindow(props) {
                 mainWindow = (
                     <Container fluid className={"overflow-hidden px-0"}>
                         <Row className={"h-100 gx-0 "}>
-                            <Col md={5} lg={4} xl={3} className={"h-100"}>
+                            <Col md={5} lg={4} xl={4} className={"h-100"}>
                                 <ClassList upSection={upSection} setUpSection={setUpSection}
                                     setClassSection={setClassSection} activeClass={activeClass}
                                            setActiveClass={setActiveClass}  {...props}></ClassList>
                             </Col>
-                            <Col md={7} lg={8} xl={9} className={"h-100"}>
+                            <Col md={7} lg={8} xl={8} className={"h-100"}>
                                 {activeClass.name ?
-                                    <ClassPreview upSection={upSection} setUpSection={setUpSection}
-                                        classSection={classSection}
+                                    <ClassPreview activeClassStandard={activeClassStandard}
+                                                  setActiveClassStandard={setActiveClassStandard}
+                                                  activeClassUnit={activeClassUnit} setActiveClassUnit={setActiveClassUnit}
+                                                  activeClassCycle={activeClassCycle} setActiveClassCycle={setActiveClassCycle}
+                                                  upSection={upSection} setUpSection={setUpSection}
+                                                  classSection={classSection}
                                                   setClassSection={setClassSection} activeClass={activeClass}
                                                   setActiveClass={setActiveClass} {...props}></ClassPreview>
                                     :

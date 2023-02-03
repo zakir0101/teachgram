@@ -10,6 +10,7 @@ function Login(props) {
 
 
     let handleChange = (event) => {
+        setError("")
         if (event.target.type === "password")
             setPassword(event.target.value)
         else
@@ -32,10 +33,10 @@ function Login(props) {
                     break;
                 case "SUCCESS" :
                     props.setShowLogin(false)
-
                     props.setUser(data)
                     props.setLogged(true)
                     saveUserCookies(data)
+                    props.setSection("Classes")
                     break
                 case "error" :
                     props.setSyntaxError(data.msg)
@@ -49,8 +50,10 @@ function Login(props) {
 
     useEffect(() => {
         let user = getUserCookies()
-        if (user.username && user.password)
+        if (user.username && user.password) {
             getUser(user.username, user.password)
+            setError("")
+        }
     }, []);
 
     return (

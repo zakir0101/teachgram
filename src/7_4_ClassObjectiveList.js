@@ -74,17 +74,17 @@ function ClassObjectiveList(props) {
                         {objective.text}
                     </Card.Text>
                     <div className={"d-flex justify-content-end "}>
-                        <Card.Link>
+                        <div>
 
 
                                     <span onClick={() => setObjectiveDone(objective, true)}
-                                          className={"text-success text-decoration-underline "+ btn_d_class}>
+                                          className={"text-success text-decoration-none my-link"+ btn_d_class}>
                                         done</span>
-                        </Card.Link>
-                        <Card.Link>
+                        </div>
+                        <div >
                                     <span onClick={() => setObjectiveDone(objective, false)}
-                                          className={"text-danger text-decoration-underline  "+btn_nd_class}>not done</span>
-                        </Card.Link>
+                                          className={"text-danger text-decoration-none my-link "+btn_nd_class}>not done</span>
+                        </div>
                     </div>
                 </Card.Body>
             </Card>
@@ -104,7 +104,7 @@ function ClassObjectiveList(props) {
                      title={title}
                      {...props}></Toolbar>
 
-            <div className={"pt-3 px-5"}>
+            <div className={"py-3 px-2 mx-3 mt-2 "} style={{backgroundColor:"rgba(207, 234, 212, 0.3)"}}>
                 <ProgressBar className={""} style={{height:"1.5rem"}}
                              now={now} label={now + "%"} variant={"success"}/>
             </div>
