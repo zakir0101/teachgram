@@ -10,7 +10,7 @@ if(mode === ONLINE){
 {    address = 'http://localhost/teachgram/0_main.php'
 
 }else if(mode===2) {
-    address = 'http://192.168.185.149/teachgram/0_main.php'
+    address = 'http://192.168.140.149/teachgram/0_main.php'
 }
 
 

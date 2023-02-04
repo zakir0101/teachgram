@@ -12,6 +12,7 @@ function ObjectiveList(props) {
     let [del, setDel] = useState(false)
     let [selected, setSelected] = useState({})
     let [objectiveList, setObjectiveList] = useState([])
+    let [move , setMove] = useState(" move-right")
 
 
     let handleSyntaxError = (error) => {
@@ -28,6 +29,7 @@ function ObjectiveList(props) {
 
 
     useEffect(() => {
+        setMove(" move-middle")
         getObjectiveList()
     }, [])
 
@@ -194,20 +196,29 @@ function ObjectiveList(props) {
         list.push(item)
     }
 
+    let goToStandard = () => {
+        props.setOrigin("Unit")
+        setMove(" move-right")
+        setTimeout(() => props.setStandardSection("StandardList"), 300)
+    }
+    let goToUnit = () => {
+        props.setOrigin("Unit")
+        setMove("move-right")
+        setTimeout(() => props.setStandardSection("UnitList"), 300)
+    }
 
     let title =
+
         <div className={"breadcrumb  m-0 p-0"}>
 
-            <Breadcrumb.Item className={"small"} active
-                             onClick={() => props.setStandardSection("StandardList")}>Standards</Breadcrumb.Item>
-            <Breadcrumb.Item className={"small"} active
-                             onClick={() => props.setStandardSection("UnitList")}>Units</Breadcrumb.Item>
+            <Breadcrumb.Item className={"small"} active onClick={goToStandard}>Standards</Breadcrumb.Item>
+            <Breadcrumb.Item className={"small"} active onClick={goToUnit }>Units</Breadcrumb.Item>
             <Breadcrumb.Item className={"small"} active o>Objective</Breadcrumb.Item>
         </div>
 
 
     return (
-        <>
+        <div   className={"w-100 h-100 position-absolute outside-right transition "+move}>
             <Toolbar titleCenterd={false}
                      buttonVariant={"outline-light"}
                      variant={"light"} toggleDefualt={false}
@@ -236,7 +247,7 @@ function ObjectiveList(props) {
             }
 
 
-        </>
+        </div>
     )
 
 

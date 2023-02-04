@@ -10,7 +10,7 @@ function StandardWindow(props) {
     let [standardSection, setStandardSection] = useState("StandardList")
     let [activeStandard, setActiveStandard] = useState({})
     let [activeUnit, setActiveUnit] = useState({})
-
+    let [origin , setOrigin] = useState("Main")
     let mainWindow, sideWindow;
 
     useEffect(() => {
@@ -25,22 +25,28 @@ function StandardWindow(props) {
     if(activeStandard.name)
         title = activeStandard.name
 
+
     if (props.windowSize === "sm") {
         switch (standardSection) {
             case "StandardList" :
-                mainWindow = <StandardList setStandardSection={setStandardSection}
+                mainWindow =
+                    <StandardList origin={origin} setOrigin={setOrigin}
+                                           setStandardSection={setStandardSection}
                                            setActiveStandard={setActiveStandard}
                                            activeStandard={activeStandard}
                                            {...props} ></StandardList>
-                break;
+
+                    break;
             case "UnitList":
-                sideWindow = <UnitList standardSection={standardSection}
+                sideWindow = <UnitList origin={origin} setOrigin={setOrigin}
+                                       standardSection={standardSection}
                                        setStandardSection={setStandardSection} activeStandard={activeStandard}
                                        setActiveUnit={setActiveUnit} {...props}></UnitList>
                 break;
 
             case "ObjectiveList" :
-                sideWindow = <ObjectiveList standardSection={standardSection}
+                sideWindow = <ObjectiveList origin={origin} setOrigin={setOrigin}
+                                            standardSection={standardSection}
                                             setStandardSection={setStandardSection} activeUnit={activeUnit}
                                             {...props}></ObjectiveList>
                 break;
@@ -48,7 +54,7 @@ function StandardWindow(props) {
         if(!mainWindow)
             mainWindow=  <div className={"d-grid template-row-inverse overflow-auto h-100"}>
 
-                <div className={" overflow-auto " }>
+                <div className={"overflow-auto position-relative " }>
                     {sideWindow}
                 </div>
                 <Toolbar titleCenterd={true}
@@ -72,13 +78,13 @@ function StandardWindow(props) {
 
         else if (standardSection === "UnitList")
             sideWindow =
-                <UnitList        standardSection={standardSection}
+                <UnitList        standardSection={standardSection} origin={origin} setOrigin={setOrigin}
                                  setStandardSection={setStandardSection} activeStandard={activeStandard}
                                  setActiveUnit={setActiveUnit} {...props}></UnitList>
 
         else if (standardSection === "ObjectiveList")
             sideWindow =
-                <ObjectiveList   standardSection={standardSection}
+                <ObjectiveList   standardSection={standardSection} origin={origin} setOrigin={setOrigin}
                                  setStandardSection={setStandardSection} activeUnit={activeUnit}
                                  {...props}></ObjectiveList>
 
@@ -88,14 +94,15 @@ function StandardWindow(props) {
             <Container fluid className={"overflow-hidden px-0"}>
                 <Row className={"h-100 gx-0 "}>
                     <Col md={5} lg={4} xl={4} className={"h-100"}>
-                        <StandardList setStandardSection={setStandardSection}
+                        <StandardList origin={origin} setOrigin={setOrigin}
+                                      setStandardSection={setStandardSection}
                                       setActiveStandard={setActiveStandard}
                                       activeStandard={activeStandard}
                                       {...props} ></StandardList></Col>
                     <Col md={7} lg={8} xl={8} className={"h-100"}>
                         <div className={"d-grid template-row-inverse  h-100"}>
 
-                            <div className={" overflow-x-hidden " }>
+                            <div className={"overflow-x-hidden position-relative  " }>
                                 {sideWindow}
                             </div>
                             <Toolbar titleCenterd={true}

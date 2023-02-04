@@ -5,14 +5,19 @@ import {capitalize} from "./util";
 import {Toolbar} from "./Toolbar";
 import {AddClass} from "./7_1_1_AddClass";
 import {ConfirmDelete} from "./ConfirmDelete";
+import {propsWithBsClassName} from "react-bootstrap-typeahead/types/utils";
 
 function StandardList(props) {
+    let move_s
+    props.origin === "Main" ? move_s = " move-right" : move_s = " move-left"
+
     let [add, setAdd] = useState(false)
     let [edit, setEdit] = useState(false)
     let [del, setDel] = useState(false)
     let [selected, setSelected] = useState({})
     let [standardList, setStandardList] = useState([])
     let [subjectList, setSubjectList] = useState([])
+    let [move, setMove] = useState(move_s)
 
 
     let handleSyntaxError = (error) => {
@@ -31,15 +36,19 @@ function StandardList(props) {
     let getSubjectList = () => {
         let msg = {type: 'subject', command: 'get'}
         let handleSuccess = (data) => {
-            list = data.map((subject) => capitalize( subject.name))
+            list = data.map((subject) => capitalize(subject.name))
             setSubjectList(list)
         }
-        post_message_action(msg ,handleSyntaxError, handleSuccess,
+        post_message_action(msg, handleSyntaxError, handleSuccess,
             handleSyntaxError)
     }
 
 
-    useEffect(() => {getSubjectList();getStandardList()}, [])
+    useEffect(() => {
+        setMove("  move-middle")
+        getSubjectList();
+        getStandardList()
+    }, [])
 
 
     let handleAdd = (e) => {
@@ -124,8 +133,14 @@ function StandardList(props) {
     let handleDoubleClick = (e, standard) => {
         if (e)
             e.stopPropagation()
-        props.setActiveStandard(standard)
-        props.setStandardSection("UnitList")
+        props.setOrigin("Standard")
+        if (props.windowSize === "sm")
+            setMove(" move-left")
+        setTimeout(() => {
+            props.setActiveStandard(standard)
+            props.setStandardSection("UnitList")
+        }, 300)
+
     }
 
     let handleClick = (event, standard) => {
@@ -178,8 +193,8 @@ function StandardList(props) {
                             onDoubleClick={(e) => handleDoubleClick(e, standard)}
                             onClick={(event) => handleClick(event, standard)}
                             action
-                            className={"position-relative  py-3 py-md-2  d-flex standard-card align-items-center rounded-3 border-bottom border-end "+ active + border}>
-                <div className={"position-absolute start-0  end-0 top-0 bottom-0    " }>
+                            className={"position-relative  py-3 py-md-2  d-flex standard-card align-items-center rounded-3 border-bottom border-end " + active + border}>
+                <div className={"position-absolute start-0  end-0 top-0 bottom-0    "}>
                 </div>
                 <div style={{height: "2.3rem", width: "2.3rem"}}
                      className={"rounded-circle flex-sch  d-flex lh-sm fs-4 justify-content-center align-items-center flex-shrink-0  " + color[2]}>
@@ -188,7 +203,7 @@ function StandardList(props) {
 
                 <div className={"ms-3 d-flex flex-column lh-sm justify-content-between h-100"}>
                     <strong className={"text-dark-emphasis "}>{standard.name}</strong>
-                    <small className={"lh-sm"}>{capitalize( standard.subject_name )}</small>
+                    <small className={"lh-sm"}>{capitalize(standard.subject_name)}</small>
 
                 </div>
             </ListGroup.Item>
@@ -207,37 +222,39 @@ function StandardList(props) {
         add_title = "Add a new Standard"
 
     return (
+        <div className={"w-100 h-100 position-relative"}>
+            <div className={"d-grid template-row-inverse h-100 w-100 position-absolute transition " + move}>
 
-        <div className={"d-grid template-row-inverse h-100"}>
-            <div className={"overflow-auto  border-end"} onClick={() => setSelected({})}>
-                <ListGroup variant={"flush"} className={"d-flex flex-column gap-1 px-2 pt-1"}>
-                    {list}
-                </ListGroup>
+                <div className={"overflow-auto  border-end"} onClick={() => setSelected({})}>
+                    <ListGroup variant={"flush"} className={"d-flex flex-column gap-1 px-2 pt-1"}>
+                        {list}
+                    </ListGroup>
+                </div>
+                <Toolbar titleCenterd={false}
+                         buttonVariant={"outline-dark"}
+                         variant={"dark"} toggleDefual t={false}
+                         selected={selected} className={"bg-dark "}
+                         handleAdd={handleAdd} handleEdit={handleEdit} handleDelete={handleDelete}
+                         editClassName={nav_btn_class} addClassName={nav_btn_class}
+                         deleteClassName={nav_btn_class} toggleClassName={nav_btn_class + " d-md-none"}
+                         title={"Standard List"}
+                         {...props}></Toolbar>
+                {!add ? <></> :
+                    <AddClass subjectList={subjectList}
+                              title={add_title} handleCancel={handleCancel}
+                              handleAddOk={handleAddOk} mode={"Standard"}
+                              handleEditOk={handleEditOk} add={add}
+                              edit={edit} selected={selected} {...props}
+                    ></AddClass>
+                }
+                {!del ? <></> :
+                    <ConfirmDelete handleCancel={handleCancel} handleDeleteOk={handleDeleteOk} del={del}
+                                   name={selected.name}
+                    >
+                    </ConfirmDelete>
+
+                }
             </div>
-            <Toolbar titleCenterd={false}
-                     buttonVariant={"outline-dark"}
-                     variant={"dark"} toggleDefual t={false}
-                     selected={selected} className={"bg-dark "}
-                     handleAdd={handleAdd} handleEdit={handleEdit} handleDelete={handleDelete}
-                     editClassName={nav_btn_class} addClassName={nav_btn_class}
-                     deleteClassName={nav_btn_class} toggleClassName={nav_btn_class + " d-md-none"}
-                     title={"Standard List"}
-                     {...props}></Toolbar>
-            {!add ? <></> :
-                <AddClass subjectList={subjectList}
-                          title={add_title} handleCancel={handleCancel}
-                          handleAddOk={handleAddOk} mode={"Standard"}
-                          handleEditOk={handleEditOk} add={add}
-                          edit={edit} selected={selected} {...props}
-                ></AddClass>
-            }
-            {!del ? <></> :
-                <ConfirmDelete handleCancel={handleCancel} handleDeleteOk={handleDeleteOk} del={del}
-                               name={selected.name}
-                >
-                </ConfirmDelete>
-
-            }
         </div>
     )
 

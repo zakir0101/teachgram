@@ -7,13 +7,15 @@ import {AddClass} from "./7_1_1_AddClass";
 import {ConfirmDelete} from "./ConfirmDelete";
 
 function UnitList(props) {
-
+    let move_s
+    props.origin ==="Standard"? move_s=" move-right":move_s=" move-left";
+    console.log("move_s is "+move_s)
     let [add, setAdd] = useState(false)
     let [edit, setEdit] = useState(false)
     let [del, setDel] = useState(false)
     let [selected, setSelected] = useState({})
     let [untList, setUnitList] = useState([])
-
+    let [move, setMove] = useState(move_s)
 
     let handleSyntaxError = (error) => {
         props.setSyntaxError(error);
@@ -29,6 +31,8 @@ function UnitList(props) {
 
 
     useEffect(() => {
+        console.log("insiede using effect")
+        setMove(" move-middle")
         getUnitList()
     }, [])
     useEffect(() => {
@@ -117,8 +121,12 @@ function UnitList(props) {
     let handleDoubleClick = (e, unit) => {
         if (e)
             e.stopPropagation()
-        props.setActiveUnit(unit)
-        props.setStandardSection("ObjectiveList")
+        setMove(" move-left")
+        setTimeout(() => {
+            props.setActiveUnit(unit)
+            props.setStandardSection("ObjectiveList")
+        }, 300)
+
     }
 
     let handleClick = (event, unit) => {
@@ -169,11 +177,11 @@ function UnitList(props) {
             <Col>
                 <Card onDoubleClick={(event) => handleDoubleClick(event, unit)}
                       onClick={(event) => handleClick(event, unit)}
-                      className={"standard-card position-relative w-100 border-0 border-bottom border-end  "+active+border}
-                      style={{height:"8rem"}}
-                    >
+                      className={"standard-card position-relative w-100 border-0 border-bottom border-end  " + active + border}
+                      style={{height: "8rem"}}
+                >
                     <Card.Body>
-                        <div className={"position-absolute start-0  end-0 top-0 bottom-0    " }>
+                        <div className={"position-absolute start-0  end-0 top-0 bottom-0    "}>
                         </div>
                         <div className={"d-flex justify-content-between "}>
                             <div className={"card-title fs-5 mb-0 pb-0 lh-sm"}>
@@ -203,18 +211,25 @@ function UnitList(props) {
 
 
     let title = "Units";
-    if (props.windowSize === "sm")
-
+    if (props.windowSize ) {
+        let goToStandard = () => {
+            setMove(" move-right");
+            setTimeout(() => {
+                props.setOrigin("Unit")
+                props.setStandardSection("StandardList")
+            } ,300)
+        }
         title = <div className={"breadcrumb  m-0 p-0"}>
 
             <Breadcrumb.Item className={"small"} active
-                             onClick={() => props.setStandardSection("StandardList")}>Standards</Breadcrumb.Item>
+                             onClick={goToStandard}>Standards</Breadcrumb.Item>
             <Breadcrumb.Item className={"small"} active o>Units</Breadcrumb.Item>
         </div>
 
+    }
     let old = "d-flex gap-3    py-3 px-3 flex-wrap overflow-x-auto justify-content-center"
     return (
-        <div    className={"h-100"} onClick={()=>setSelected({})}>
+        <div className={"h-100 position-absolute transition  w-100 h-100 " + move} onClick={() => setSelected({})}>
             <Toolbar titleCenterd={false}
                      buttonVariant={"outline-light"}
                      variant={"light"} toggleDefualt={false}
@@ -227,8 +242,8 @@ function UnitList(props) {
             <div><strong className={"text-danger-emphasis"}></strong></div>
 
             <Row onClick={() => setSelected({})}
-                 xs={2 } sm={3} lg={4} xl={5}
-                className={"g-2 p-2"}>
+                 xs={2} sm={3} lg={4} xl={5}
+                 className={"g-2 p-2"}>
                 {list}
             </Row>
 
